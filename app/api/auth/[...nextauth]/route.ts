@@ -50,8 +50,9 @@ export const authOptions = {
   ],
   callbacks: {
     async jwt({ token, account }: any) {
-      if (account) {
+            if (account) {
         console.log("NEW SIGN IN - account object:", JSON.stringify(account, null, 2));
+        console.log("REFRESH TOKEN TO SAVE:", account.refresh_token);
         token.accessToken = account.access_token;
         token.refreshToken = account.refresh_token;
         token.accessTokenExpires = account.expires_at ? account.expires_at * 1000 : Date.now() + 3600 * 1000;

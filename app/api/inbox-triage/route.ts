@@ -1,20 +1,10 @@
 import { NextResponse } from "next/server";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "../auth/[...nextauth]/route";
+import { getGoogleAccessToken } from "@/lib/getGoogleAccessToken";
 import { google } from "googleapis";
 import { GoogleGenAI } from "@google/genai";
 
 export async function GET() {
-  const session = await getServerSession(authOptions);
-
-  if (!session || !(session as any).accessToken) {
-    return NextResponse.json(
-      { error: "Not signed in. Sign in first at the homepage." },
-      { status: 401 }
-    );
-  }
-
-  const accessToken = (session as any).accessToken;
+  const accessToken = await getGoogleAccessToken();
 
   const oauth2Client = new google.auth.OAuth2();
   oauth2Client.setCredentials({ access_token: accessToken });
