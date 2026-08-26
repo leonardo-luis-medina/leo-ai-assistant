@@ -7,11 +7,13 @@ const handler = NextAuth({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
       authorization: {
+        url: "https://accounts.google.com/o/oauth2/v2/auth",
         params: {
           scope:
             "openid email profile https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/calendar.readonly",
           access_type: "offline",
           prompt: "consent",
+          response_type: "code",
         },
       },
     }),
