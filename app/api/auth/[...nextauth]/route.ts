@@ -15,6 +15,7 @@ async function refreshAccessToken(token: any) {
     });
 
     const refreshedTokens = await response.json();
+    console.log("Refresh response:", JSON.stringify(refreshedTokens, null, 2));
 
     if (!response.ok) throw refreshedTokens;
 
@@ -25,6 +26,7 @@ async function refreshAccessToken(token: any) {
       refreshToken: refreshedTokens.refresh_token ?? token.refreshToken,
     };
   } catch (error) {
+    console.log("Refresh FAILED:", error);
     return { ...token, error: "RefreshAccessTokenError" };
   }
 }
@@ -49,16 +51,21 @@ export const authOptions = {
   callbacks: {
     async jwt({ token, account }: any) {
       if (account) {
+        console.log("NEW SIGN IN - account object:", JSON.stringify(account, null, 2));
         token.accessToken = account.access_token;
         token.refreshToken = account.refresh_token;
         token.accessTokenExpires = account.expires_at ? account.expires_at * 1000 : Date.now() + 3600 * 1000;
         return token;
       }
 
+      console.log("Checking token - expires at:", new Date(token.accessTokenExpires), "now:", new Date());
+
       if (Date.now() < token.accessTokenExpires) {
+        console.log("Token still valid, reusing");
         return token;
       }
 
+      console.log("Token expired, attempting refresh. Refresh token exists:", !!token.refreshToken);
       return refreshAccessToken(token);
     },
     async session({ session, token }: any) {
