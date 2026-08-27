@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getGoogleAccessToken } from "@/lib/getGoogleAccessToken";
 import { google } from "googleapis";
 import { GoogleGenAI } from "@google/genai";
+import { saveOutput } from "@/lib/saveOutput";
 
 export async function GET() {
   const accessToken = await getGoogleAccessToken();
@@ -69,10 +70,16 @@ ${emailSummaries.join("\n") || "No unread emails."}
     contents: prompt,
   });
 
-  return NextResponse.json({
-    generatedAt: new Date().toISOString(),
+  const generatedAt = new Date().toISOString();
+
+  const result = {
+    generatedAt,
     calendarRaw: eventSummaries,
     emailRaw: emailSummaries,
     brief: geminiResponse.text,
-  });
+  };
+
+  await saveOutput("morning-brief", generatedAt, result);
+
+  return NextResponse.json(result);
 }
