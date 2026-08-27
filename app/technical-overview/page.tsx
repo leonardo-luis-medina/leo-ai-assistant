@@ -153,16 +153,13 @@ export default function DocumentationPage() {
       {/* Reflection */}
       <section className="px-6 py-14">
         <div className="mx-auto max-w-4xl">
-          <h2 className="text-xl font-semibold text-neutral-200">What I&apos;d Change Next</h2>
-          <p className="mt-4 text-sm leading-relaxed text-neutral-400">
-            {/* REPLACE THIS: your own honest reflection, 2-4 sentences */}
-            The weekly review currently repeats similar phrasing across runs
-            since the underlying data (empty calendar) doesn&apos;t change much
-            day to day — next iteration I&apos;d have it compare against the
-            previous week&apos;s output to highlight what&apos;s actually new.
-            I&apos;d also add a way to act directly on triage results (archive,
-            reply-draft) instead of just reading them.
-          </p>
+          
+          
+
+
+
+
+          
         </div>
       </section>
     </main>
