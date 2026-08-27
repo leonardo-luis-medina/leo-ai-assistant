@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import Link from "next/link";
 
 type OutputRow = {
   id: number;
@@ -119,7 +120,7 @@ export default function PortfolioPage() {
       <section className="border-b border-neutral-800 px-6 py-16 sm:py-20">
         <div className="mx-auto max-w-4xl">
           <p className="mb-3 text-sm font-medium uppercase tracking-wider text-neutral-500">
-            AI Operating System — Case Study
+            AI Operating System
           </p>
           <h1 className="text-3xl font-bold sm:text-4xl">
             Leo&apos;s AI Executive Assistant
@@ -130,6 +131,16 @@ export default function PortfolioPage() {
             triages my inbox, and writes a weekly review — so I spend less time
             managing my day and more time doing the work that matters.
           </p>
+
+
+          <Link
+            href="/technical-overview"
+            className="mt-6 inline-flex items-center gap-2 rounded-lg border border-sky-500/40 bg-sky-500/10 px-6 py-3 text-base font-semibold text-sky-200 transition hover:border-sky-400/60 hover:bg-sky-500/20"
+          >
+            📄 Technical Overview
+          </Link>
+         
+
           <div className="mt-6 flex flex-wrap gap-2">
             <span className="rounded-full border border-neutral-700 bg-neutral-900 px-3 py-1 text-xs text-neutral-400">Next.js</span>
             <span className="rounded-full border border-neutral-700 bg-neutral-900 px-3 py-1 text-xs text-neutral-400">Gemini API</span>
