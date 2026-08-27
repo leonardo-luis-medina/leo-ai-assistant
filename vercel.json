@@ -1,0 +1,16 @@
+{
+  "crons": [
+    {
+      "path": "/api/morning-brief",
+      "schedule": "0 0 * * *"
+    },
+    {
+      "path": "/api/weekly-review",
+      "schedule": "0 1 * * 1"
+    },
+    {
+      "path": "/api/inbox-triage",
+      "schedule": "0 2 * * *"
+    }
+  ]
+}
