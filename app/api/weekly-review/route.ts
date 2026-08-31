@@ -56,7 +56,10 @@ export async function GET() {
   // Send to Gemini for a weekly review
   const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
-  const prompt = `You are my executive assistant. Based on the data below, write a concise weekly review covering: (1) what's coming up this week, (2) any patterns or themes in recent emails worth flagging, (3) 2-3 suggested priorities for the week. Keep it professional and skimmable.
+  const prompt = `You are my executive assistant. 
+  Based on the data below, write a concise weekly review covering: (1) what's coming up this week,
+   (2) any patterns or themes in recent emails worth flagging, (3) 2-3 suggested priorities for the week.
+    Keep it professional and skimmable.
 
 THIS WEEK'S CALENDAR:
 ${eventSummaries || "No events scheduled this week."}

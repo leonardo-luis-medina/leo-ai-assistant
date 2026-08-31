@@ -56,7 +56,9 @@ export async function GET() {
   // Send to Gemini for summarization
   const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
-  const prompt = `You are my executive assistant. Based on the data below, write a short, professional morning brief with 3-5 bullet highlights. Be concise and prioritize by urgency.
+  const prompt = `You are my executive assistant. Based on the data below,
+   write a short, professional morning brief with 3-5 bullet highlights.
+    Be concise and prioritize by urgency.
 
 TODAY'S CALENDAR:
 ${eventSummaries || "No events today."}

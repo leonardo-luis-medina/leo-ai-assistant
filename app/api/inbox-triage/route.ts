@@ -35,7 +35,31 @@ export async function GET() {
 
   const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
-  const prompt = `You are my executive assistant doing inbox triage. Categorize the emails below into exactly these buckets: URGENT (needs action today), IMPORTANT (needs action this week), FYI (informational, no action needed), and PROMOTIONAL/NOISE (job alerts, marketing, can be ignored or bulk-deleted). For each bucket, list the relevant emails briefly. End with a one-line recommendation on what to do with the PROMOTIONAL/NOISE bucket.
+  /* 
+  const prompt = `You are my executive assistant doing inbox triage. 
+  Categorize the emails below into exactly these buckets: URGENT (needs action today)
+  , IMPORTANT (needs action this week), FYI (informational, no action needed),
+   and PROMOTIONAL/NOISE (job alerts, marketing, can be ignored or bulk-deleted).
+    For each bucket, list the relevant emails briefly.
+     End with a one-line recommendation on what to do with the PROMOTIONAL/NOISE bucket.
+*/
+
+const prompt = `You are my executive assistant doing inbox triage. 
+  Categorize the emails below into exactly these buckets: URGENT (needs action today), 
+  IMPORTANT (needs action this week), FYI (informational, no action needed), 
+  and PROMOTIONAL/NOISE (automated job board digests, bulk alerts, and marketing that 
+  can be ignored or bulk-deleted). 
+  When classifying job-related emails, treat automated bulk job alerts (digests listing 
+  multiple postings) as PROMOTIONAL/NOISE even if the same sender also sends direct 
+  messages — only classify a job-related email as IMPORTANT if it is a direct, 
+  individually-addressed message about a specific application or a named opportunity, 
+  not a digest.
+  Start the output with a one-line summary: total emails reviewed and count per bucket.
+  For each bucket, list the relevant emails briefly. 
+  End with a one-line recommendation on what to do with the PROMOTIONAL/NOISE bucket.
+
+
+
 
 EMAILS (LAST 3 DAYS):
 ${emailSummaries.join("\n") || "No recent emails."}
