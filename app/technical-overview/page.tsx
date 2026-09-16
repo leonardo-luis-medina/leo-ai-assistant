@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 
 function ImagePlaceholder({ label }: { label: string }) {
@@ -7,6 +10,45 @@ function ImagePlaceholder({ label }: { label: string }) {
       <p className="text-sm font-medium text-neutral-400">Screenshot needed</p>
       <p className="text-xs text-neutral-600">{label}</p>
     </div>
+  );
+}
+
+function ScreenshotViewer({
+  src,
+  alt,
+}: {
+  src: string;
+  alt: string;
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <>
+      <button
+        type="button"
+        onClick={() => setIsOpen(true)}
+        className="block w-full cursor-zoom-in"
+      >
+        <img
+          src={src}
+          alt={alt}
+          className="h-auto w-full"
+        />
+      </button>
+
+      {isOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-6"
+          onClick={() => setIsOpen(false)}
+        >
+          <img
+            src={src}
+            alt={alt}
+            className="max-h-[95vh] max-w-[95vw] object-contain"
+          />
+        </div>
+      )}
+    </>
   );
 }
 
@@ -46,7 +88,7 @@ export default function DocumentationPage() {
           </p>
           <h1 className="text-3xl font-bold sm:text-4xl">How This System Works</h1>
           <p className="mt-4 max-w-2xl text-lg text-neutral-400">
-            A technical walkthrough of the AI executive assistant: what it does,
+            A technical walkthrough of the AI executive assistant: what it does, 
             how it&apos;s built, and how the pieces connect.
           </p>
         </div>
@@ -58,11 +100,11 @@ export default function DocumentationPage() {
           <h2 className="text-xl font-semibold text-neutral-200">Overview</h2>
           <p className="mt-4 text-sm leading-relaxed text-neutral-400">
             {/* REPLACE THIS: 2-3 sentences in your own words on why you built this */}
-            This system connects my Google Calendar and Gmail to an AI model that
-            reads both every day and produces a morning brief, an inbox triage,
-            and a weekly review — automatically, without me opening either app.
-            Every output is saved permanently so I have a running history of
-            what the system has done, and a public-facing page shows the system
+            This system connects my Google Calendar and Gmail to an AI model that 
+            reads both every day and produces a morning brief, an inbox triage, 
+            and a weekly review — automatically, without me opening either app. 
+            Every output is saved permanently so I have a running history of 
+            what the system has done, and a public-facing page shows the system 
             working in real time.
           </p>
         </div>
@@ -98,35 +140,35 @@ export default function DocumentationPage() {
           <h2 className="text-xl font-semibold text-neutral-200">How It Works</h2>
           <div className="mt-8 space-y-8">
             <Step number={1} title="Scheduled trigger">
-              Vercel Cron fires two jobs daily — Morning Brief and Inbox Triage —
-              at set UTC times. Weekly Review runs on demand for now (Hobby plan
+              Vercel Cron fires two jobs daily — Morning Brief and Inbox Triage — 
+              at set UTC times. Weekly Review runs on demand for now (Hobby plan 
               allows 2 daily crons).
             </Step>
             <Step number={2} title="Live data fetch">
-              Each route authenticates with Google using a stored refresh token
-              (no manual login needed), then pulls today&apos;s Calendar events
+              Each route authenticates with Google using a stored refresh token 
+              (no manual login needed), then pulls today&apos;s Calendar events 
               and recent Gmail messages via their respective APIs.
             </Step>
             <Step number={3} title="AI summarization">
-              The raw calendar and email data is sent to Gemini with a specific
-              prompt per route (brief, triage-by-urgency, or weekly review),
+              The raw calendar and email data is sent to Gemini with a specific 
+              prompt per route (brief, triage-by-urgency, or weekly review), 
               which returns a written summary.
             </Step>
             <Step number={4} title="Redaction pass">
-              Before saving, a second Gemini call rewrites the summary for
-              public display — replacing real names, companies, and account
-              details with generic placeholders — while keeping the original
+              Before saving, a second Gemini call rewrites the summary for 
+              public display — replacing real names, companies, and account 
+              details with generic placeholders — while keeping the original 
               intact for owner-only viewing.
             </Step>
             <Step number={5} title="Persisted to database">
-              Both the original and redacted versions are saved as a row in
-              Neon Postgres, timestamped, so a permanent history builds up
+              Both the original and redacted versions are saved as a row in 
+              Neon Postgres, timestamped, so a permanent history builds up 
               over time.
             </Step>
             <Step number={6} title="Displayed live">
-              The /portfolio page fetches the latest rows from the database on
-              load (and on manual refresh), rendering them as cards. Visitors
-              see the redacted version by default; a password unlocks the
+              The /portfolio page fetches the latest rows from the database on 
+              load (and on manual refresh), rendering them as cards. Visitors 
+              see the redacted version by default; a password unlocks the 
               original for the owner.
             </Step>
           </div>
@@ -141,11 +183,82 @@ export default function DocumentationPage() {
             Screenshots proving the system exists and runs for real.
           </p>
           <div className="mt-6 grid gap-6 sm:grid-cols-2">
-            <ImagePlaceholder label="Vercel Cron Jobs settings page — showing both scheduled jobs, active" />
-            <ImagePlaceholder label="Google Cloud Console OAuth consent screen — showing Calendar + Gmail scopes granted" />
-            <ImagePlaceholder label="Neon SQL Editor — SELECT * FROM outputs; showing real saved rows" />
-            <ImagePlaceholder label="Vercel Deployments tab — showing successful production deployment" />
-            <ImagePlaceholder label="The /portfolio page itself — Redacted tab, live outputs visible" />
+
+            <div className="overflow-hidden rounded-xl border border-neutral-800 bg-neutral-900/50">
+              <ScreenshotViewer
+                src="/screenshots/vercel-cron-jobs.png"
+                alt="Vercel Cron Jobs settings page showing the scheduled jobs"
+              />
+              <div className="p-4">
+                <p className="text-sm font-medium text-neutral-300">
+                  Vercel Cron Jobs
+                </p>
+                <p className="mt-1 text-xs text-neutral-500">
+                  Scheduled jobs showing the automated system triggers.
+                </p>
+              </div>
+            </div>
+
+            <div className="overflow-hidden rounded-xl border border-neutral-800 bg-neutral-900/50">
+              <ScreenshotViewer
+                src="/screenshots/google-oauth-consent.png"
+                alt="Google Cloud Console OAuth consent screen"
+              />
+              <div className="p-4">
+                <p className="text-sm font-medium text-neutral-300">
+                  Google OAuth
+                </p>
+                <p className="mt-1 text-xs text-neutral-500">
+                  Google OAuth configuration showing the Calendar and Gmail access.
+                </p>
+              </div>
+            </div>
+
+            <div className="overflow-hidden rounded-xl border border-neutral-800 bg-neutral-900/50">
+              <ScreenshotViewer
+                src="/screenshots/neon-database-rows.png"
+                alt="Neon SQL Editor showing saved output rows"
+              />
+              <div className="p-4">
+                <p className="text-sm font-medium text-neutral-300">
+                  Neon Database
+                </p>
+                <p className="mt-1 text-xs text-neutral-500">
+                  Saved AI outputs stored in the Postgres database.
+                </p>
+              </div>
+            </div>
+
+            <div className="overflow-hidden rounded-xl border border-neutral-800 bg-neutral-900/50">
+              <ScreenshotViewer
+                src="/screenshots/vercel-deployment.png"
+                alt="Vercel Deployments tab showing a successful production deployment"
+              />
+              <div className="p-4">
+                <p className="text-sm font-medium text-neutral-300">
+                  Vercel Deployment
+                </p>
+                <p className="mt-1 text-xs text-neutral-500">
+                  Successful production deployment of the application.
+                </p>
+              </div>
+            </div>
+
+            <div className="overflow-hidden rounded-xl border border-neutral-800 bg-neutral-900/50">
+              <ScreenshotViewer
+                src="/screenshots/portfolio-live-output.png"
+                alt="Portfolio page showing live redacted AI outputs"
+              />
+              <div className="p-4">
+                <p className="text-sm font-medium text-neutral-300">
+                  Live Portfolio Output
+                </p>
+                <p className="mt-1 text-xs text-neutral-500">
+                  The public portfolio displaying the redacted live outputs.
+                </p>
+              </div>
+            </div>
+
           </div>
         </div>
       </section>
@@ -153,13 +266,8 @@ export default function DocumentationPage() {
       {/* Reflection */}
       <section className="px-6 py-14">
         <div className="mx-auto max-w-4xl">
-          
-          
-
-
-
-
-          
+           
+           
         </div>
       </section>
     </main>
